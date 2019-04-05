@@ -5,6 +5,7 @@
 import type { Globals, Ref, RefType, Translation } from "../common/common.js.flow";
 import type { Size } from "../InputField/index";
 import type { spaceAfter } from "../common/getSpacingToken/index";
+import type { Type } from "../InputField/index.js.flow";
 
 export type Props = {|
   ...Globals,
@@ -21,14 +22,18 @@ export type Props = {|
   +maxValue?: number,
   +minValue?: number,
   +required?: boolean,
-  tabIndex?: string,
+  +tabIndex?: string,
+  +customValue?: string,
   +onChange?: number => void | Promise<any>,
   +onFocus?: (ev: SyntheticInputEvent<HTMLInputElement>) => void | Promise<any>,
   +onBlur?: (ev: SyntheticInputEvent<HTMLInputElement>) => void | Promise<any>,
+  +onIncrement?: () => void | Promise<any>,
+  +onDecrement?: () => void | Promise<any>,
 |};
 
 export type State = {|
   value: number,
+  type: Type,
 |};
 
 export type ForwardedRef = {

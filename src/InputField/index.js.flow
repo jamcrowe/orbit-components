@@ -8,13 +8,14 @@ import type { Globals, Ref, Translation } from "../common/common.js.flow";
 import type { spaceAfter } from "../common/getSpacingToken/index";
 
 export type Size = "small" | "normal";
+export type Type = "text" | "number" | "email" | "password" | "passportid";
 
 export type Props = {|
   ...Globals,
   ...Ref,
   ...spaceAfter,
   +size?: Size,
-  +type?: "text" | "number" | "email" | "password" | "passportid",
+  +type?: Type,
   +name?: string,
   +label?: Translation,
   +inlineLabel?: boolean,

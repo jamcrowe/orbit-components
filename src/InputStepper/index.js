@@ -58,7 +58,15 @@ StyledButtonWrapper.defaultProps = {
 class InputStepper extends React.Component<Props & ForwardedRef, State> {
   state = {
     value: this.props.defaultValue || 0,
+    type: "number",
   };
+
+  static getDerivedStateFromProps(props) {
+    if (props.customValue) {
+      return { type: "text", value: props.customValue };
+    }
+    return null;
+  }
 
   setValueAndInjectCallback = (value: number) => {
     const { onChange } = this.props;
@@ -70,21 +78,27 @@ class InputStepper extends React.Component<Props & ForwardedRef, State> {
 
   incrementCounter = () => {
     const { value } = this.state;
-    const { maxValue = Number.POSITIVE_INFINITY, step = 1 } = this.props;
+    const { maxValue = Number.POSITIVE_INFINITY, step = 1, customValue, onIncrement } = this.props;
     const newValue = value + step;
     const stateValue = newValue >= +maxValue ? maxValue : newValue;
-    if (stateValue !== value) {
+    if (stateValue !== value && !customValue) {
       this.setValueAndInjectCallback(stateValue);
+    }
+    if (customValue && onIncrement) {
+      onIncrement();
     }
   };
 
   decrementCounter = () => {
     const { value } = this.state;
-    const { minValue = Number.NEGATIVE_INFINITY, step = 1 } = this.props;
+    const { minValue = Number.NEGATIVE_INFINITY, step = 1, customValue, onDecrement } = this.props;
     const newValue = value - step;
     const stateValue = newValue <= +minValue ? minValue : newValue;
-    if (stateValue !== value) {
+    if (stateValue !== value && !customValue) {
       this.setValueAndInjectCallback(stateValue);
+    }
+    if (customValue && onDecrement) {
+      onDecrement();
     }
   };
 
@@ -111,7 +125,6 @@ class InputStepper extends React.Component<Props & ForwardedRef, State> {
   handleKeyDecrement = (ev: SyntheticKeyboardEvent<HTMLInputElement>) => {
     if (ev.keyCode === KEY_CODE_MAP.SPACE) {
       ev.preventDefault();
-      this.decrementCounter();
     } else if (ev.keyCode === KEY_CODE_MAP.ENTER) {
       this.decrementCounter();
     }
@@ -144,7 +157,7 @@ class InputStepper extends React.Component<Props & ForwardedRef, State> {
       forwardedRef,
       spaceAfter,
     } = this.props;
-    const { value } = this.state;
+    const { value, type } = this.state;
     return (
       <StyledInputStepper spaceAfter={spaceAfter}>
         <InputField
@@ -156,7 +169,7 @@ class InputStepper extends React.Component<Props & ForwardedRef, State> {
           name={name}
           error={error}
           help={help}
-          type="number"
+          type={type}
           onChange={this.handleChange}
           onBlur={onBlur}
           onFocus={onFocus}

@@ -56,6 +56,32 @@ storiesOf("InputStepper", module)
     },
   )
   .add(
+    "Without State",
+    () => {
+      const label = text("Label", "Label");
+      const size = select("Size", Object.values(SIZE_OPTIONS), SIZE_OPTIONS.NORMAL);
+      const name = text("Name", "name");
+      const customValue = text("Custom Value", "2 stops");
+
+      return (
+        <InputStepper
+          label={label}
+          size={size}
+          name={name}
+          onChange={action("onChange")}
+          onFocus={action("onFocus")}
+          onBlur={action("onBlur")}
+          onIncrement={action("onIncrement")}
+          onDecrement={action("onDecrement")}
+          customValue={customValue}
+        />
+      );
+    },
+    {
+      info: "Some description about this type of InputStepper in general.",
+    },
+  )
+  .add(
     "Playground",
     () => {
       const min = number("minValue", 1);
